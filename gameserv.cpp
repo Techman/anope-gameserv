@@ -14,6 +14,7 @@
 class GameServCore : public Module
 {
 	Reference<BotInfo> GameServ;
+
  public:
 	GameServCore(const Anope::string& modname, const Anope::string& creator) : Module(modname, creator, PSEUDOCLIENT | THIRD)
 	{
@@ -33,7 +34,7 @@ class GameServCore : public Module
 			throw ConfigException(Module::name + ": no bot named " + gsnick);
 	}
 
-	EventReturn OnPreHelp(CommandSource &source, const std::vector<Anope::string> &params) anope_override
+	EventReturn OnPreHelp(CommandSource& source, const std::vector<Anope::string>& params) anope_override
 	{
 		if (!params.empty() || source.c || source.service != *GameServ)
 			return EVENT_CONTINUE;

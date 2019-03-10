@@ -27,7 +27,7 @@ class CommandGSRoulette : public Command
 	{
 		const Anope::string& chan = params[0];
 		ChannelInfo* ci = ChannelInfo::Find(chan);
-        BotInfo *gs = Config->GetClient("GameServ");
+		BotInfo *gs = Config->GetClient("GameServ");
 
 		if(!ci)
 		{
@@ -47,11 +47,11 @@ class CommandGSRoulette : public Command
 			return;
 		}
 
-        if(!gs)
-        {
-            source.Reply("GameServ client not found");
-            return;
-        }
+		if(!gs)
+		{
+			source.Reply("GameServ client not found");
+			return;
+		}
 
 		User* u = source.GetUser();
 		int random = rand() % 1000;
@@ -73,15 +73,18 @@ class CommandGSRoulette : public Command
 class GSRoulette : public Module
 {
 	CommandGSRoulette commandgsroulette;
+
  public:
-	GSRoulette(const Anope::string& modname, const Anope::string& creator) :
-	Module(modname, creator, THIRD), commandgsroulette(this)
+	GSRoulette(const Anope::string& modname, const Anope::string& creator) : Module(modname, creator, THIRD),
+		commandgsroulette(this)
 	{
 		this->SetAuthor("Techman");
 		this->SetVersion("0.1");
 
-        if(!ModuleManager::FindModule("gameserv"))
-            throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
+		if(!ModuleManager::FindModule("gameserv"))
+		{
+			throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
+		}
 	}
 };
 

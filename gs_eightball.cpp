@@ -28,7 +28,7 @@ class CommandGSEightBall : public Command
 	void Execute(CommandSource& source, const std::vector<Anope::string>& params) anope_override
 	{
 		std::vector<Anope::string> responses;
-        responses.reserve(50);
+		responses.reserve(50);
 		responses.push_back("Absolutely yes!");
 		responses.push_back("Prospect looks hopeful.");
 		responses.push_back("I'd like to think so.");
@@ -59,9 +59,9 @@ class CommandGSEightBall : public Command
 		responses.push_back("No chance at all!");
 		responses.push_back("No chance in hell!");
 
-		const Anope::string &chan = params[0];
-		ChannelInfo *ci = ChannelInfo::Find(chan);
-        BotInfo *gs = Config->GetClient("GameServ");
+		const Anope::string& chan = params[0];
+		ChannelInfo* ci = ChannelInfo::Find(chan);
+		BotInfo* gs = Config->GetClient("GameServ");
 		if (!ci)
 		{
 			source.Reply(CHAN_X_NOT_REGISTERED, chan.c_str());
@@ -80,18 +80,18 @@ class CommandGSEightBall : public Command
 			return;
 		}
 
-        if(!gs)
-        {
-            source.Reply("GameServ client not found");
-            return;
-        }
+		if(!gs)
+		{
+			source.Reply("GameServ client not found");
+			return;
+		}
 
 		int pick = rand() % responses.size();
-        Anope::string text = responses[pick];
+		Anope::string text = responses[pick];
 		IRCD->SendPrivmsg(gs, ci->name, text.c_str());
 	}
 
-    bool OnHelp(CommandSource& source, const Anope::string& subcommand) anope_override
+	bool OnHelp(CommandSource& source, const Anope::string& subcommand) anope_override
 	{
 		this->SendSyntax(source);
 		source.Reply(" ");
@@ -103,14 +103,18 @@ class CommandGSEightBall : public Command
 class GSEightBall : public Module
 {
 	CommandGSEightBall commandgseightball;
+
  public:
-	GSEightBall(const Anope::string& modname, const Anope::string& creator) : Module(modname, creator, THIRD), commandgseightball(this)
+	GSEightBall(const Anope::string& modname, const Anope::string& creator) : Module(modname, creator, THIRD),
+		commandgseightball(this)
 	{
 		this->SetAuthor("Techman");
 		this->SetVersion("0.1");
 
 		if(!ModuleManager::FindModule("gameserv"))
-            throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
+		{
+			throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
+		}
 	}
 };
 

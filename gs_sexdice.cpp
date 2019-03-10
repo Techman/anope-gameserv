@@ -16,6 +16,7 @@
 class CommandGSSexDice : public Command
 {
 	bool showroller;
+
  public:
 	CommandGSSexDice(Module *creator, const Anope::string &sname = "gameserv/sexdice") : Command(creator, sname, 1, 1)
 	{
@@ -50,9 +51,9 @@ class CommandGSSexDice : public Command
 		dice2.push_back("ass");
 		dice2.push_back("crotch");
 
-		const Anope::string &chan = params[0];
-		ChannelInfo *ci = ChannelInfo::Find(chan);
-		BotInfo *gs = Config->GetClient("GameServ");
+		const Anope::string& chan = params[0];
+		ChannelInfo* ci = ChannelInfo::Find(chan);
+		BotInfo* gs = Config->GetClient("GameServ");
 		if (!ci)
 		{
 			source.Reply(CHAN_X_NOT_REGISTERED, chan.c_str());
@@ -72,21 +73,21 @@ class CommandGSSexDice : public Command
 		}
 
 		if(!gs)
-        {
-            source.Reply("GameServ client not found");
-            return;
-        }
+		{
+			source.Reply("GameServ client not found");
+			return;
+		}
 
-		std::vector<User *> users;
+		std::vector<User* > users;
 		for (Channel::ChanUserList::iterator it = ci->c->users.begin(), it_end = ci->c->users.end(); it != it_end; ++it)
 		{
-			ChanUserContainer *uc = it->second;
-			User *u = uc->user;
+			ChanUserContainer* uc = it->second;
+			User* u = uc->user;
 			if(u != ci->bi) // Don't add the BotServ bot
 				users.push_back(u);
 		}
 		int userchoice = rand() % users.size();
-		User *u = users[userchoice];
+		User* u = users[userchoice];
 
 		// http://www.cplusplus.com/forum/beginner/89214/
 		int choice1 = rand() % dice1.size();
@@ -94,7 +95,9 @@ class CommandGSSexDice : public Command
 
 		showroller = Config->GetModule(this->owner)->Get<bool>("showroller");
 		if (showroller == true)
+		{
 			IRCD->SendPrivmsg(gs, ci->name, "[SEX DICE] \002%s\002 rolled the Sex Dice!", source.GetUser()->nick.c_str());
+		}
 		if (choice2 == 4 || choice2 == 5)
 		{
 			IRCD->SendPrivmsg(gs, ci->name, "[SEX DICE] \002%s\002, you have to %s \002%s\002 %s!", source.GetUser()->nick.c_str(), dice1[choice1].c_str(), u->nick.c_str(), dice2[choice2].c_str());
@@ -105,7 +108,7 @@ class CommandGSSexDice : public Command
 		}
 	}
 
-	bool OnHelp(CommandSource &source, const Anope::string &subcommand) anope_override
+	bool OnHelp(CommandSource& source, const Anope::string& subcommand) anope_override
 	{
 		this->SendSyntax(source);
 		source.Reply(" ");
@@ -118,20 +121,23 @@ class GSFantasySexDice : public Module
 {
 	CommandGSSexDice commandgssexdice;
 	bool showroller;
+
  public:
-	GSFantasySexDice(const Anope::string &modname, const Anope::string &creator) :
-	Module(modname, creator, THIRD), commandgssexdice(this)
+	GSFantasySexDice(const Anope::string& modname, const Anope::string& creator) : Module(modname, creator, THIRD),
+		commandgssexdice(this)
 	{
 		this->SetAuthor("Techman");
 		this->SetVersion("1.0.1");
 
 		if(!ModuleManager::FindModule("gameserv"))
-            throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
+		{
+			throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
+		}
 	}
 
-	void OnReload(Configuration::Conf *conf) anope_override
+	void OnReload(Configuration::Conf* conf) anope_override
 	{
-		Configuration::Block *block = conf->GetModule(this);
+		Configuration::Block* block = conf->GetModule(this);
 		showroller = block->Get<bool>("showroller", true);
 	}
 };
