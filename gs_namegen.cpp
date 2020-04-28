@@ -38,7 +38,7 @@ class CommandGSNamegen : public Command
 		ChannelInfo* ci = ChannelInfo::Find(chan);
 		BotInfo* gs = Config->GetClient("GameServ");
 
-		if(!ci)
+		if (!ci)
 		{
 			source.Reply(CHAN_X_NOT_REGISTERED, chan.c_str());
 			return;
@@ -56,7 +56,7 @@ class CommandGSNamegen : public Command
 			return;
 		}
 
-		if(!gs)
+		if (!gs)
 		{
 			source.Reply("GameServ client not found");
 			return;
@@ -67,7 +67,7 @@ class CommandGSNamegen : public Command
 		Anope::string amount_str = params[1];
 		amount_str = amount_str.trim("-");
 		size_t amount = std::strtoul(amount_str.c_str(), NULL, 10);
-		if(amount <= 0)
+		if (amount <= 0)
 		{
 			IRCD->SendPrivmsg(gs, ci->name, "Invalid number entered, try again.");
 			this->OnHelp(source, "");
@@ -75,21 +75,21 @@ class CommandGSNamegen : public Command
 		}
 
 		// We do no more than 20 names
-		if(amount > 20)
+		if (amount > 20)
 		{
 			IRCD->SendPrivmsg(gs, ci->name, "Generating a maxinum of \00220\002 names.");
 			amount = 20;
 		}
 
 		Anope::string finished_names;
-		for(size_t i = 0; i < amount; ++i)
+		for (size_t i = 0; i < amount; ++i)
 		{
 			Anope::string namebuf;
 			size_t medial_iter;
 
 			namebuf += begin_sym[rand() % BEGIN_COUNT];
 
-			for(medial_iter = rand() % 3; medial_iter > 0; --medial_iter)
+			for (medial_iter = rand() % 3; medial_iter > 0; --medial_iter)
 			{
 				namebuf += medial_sym[rand() % MEDIAL_COUNT];
 			}
@@ -127,7 +127,7 @@ class GSNamegen : public Module
 		this->SetAuthor("Techman");
 		this->SetVersion("0.1");
 
-		if(!ModuleManager::FindModule("gameserv"))
+		if (!ModuleManager::FindModule("gameserv"))
 		{
 			throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
 		}

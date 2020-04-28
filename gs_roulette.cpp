@@ -29,7 +29,7 @@ class CommandGSRoulette : public Command
 		ChannelInfo* ci = ChannelInfo::Find(chan);
 		BotInfo *gs = Config->GetClient("GameServ");
 
-		if(!ci)
+		if (!ci)
 		{
 			source.Reply(CHAN_X_NOT_REGISTERED, chan.c_str());
 			return;
@@ -47,7 +47,7 @@ class CommandGSRoulette : public Command
 			return;
 		}
 
-		if(!gs)
+		if (!gs)
 		{
 			source.Reply("GameServ client not found");
 			return;
@@ -56,9 +56,13 @@ class CommandGSRoulette : public Command
 		User* u = source.GetUser();
 		int random = rand() % 1000;
 		if(random > 499)
+		{
 			u->Kill(gs, "BANG!");
+		}
 		else
+		{
 			IRCD->SendPrivmsg(gs, ci->name, "*click*");
+		}
 	}
 
 	bool OnHelp(CommandSource& source, const Anope::string& subcommand) anope_override
@@ -81,7 +85,7 @@ class GSRoulette : public Module
 		this->SetAuthor("Techman");
 		this->SetVersion("0.1");
 
-		if(!ModuleManager::FindModule("gameserv"))
+		if (!ModuleManager::FindModule("gameserv"))
 		{
 			throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
 		}

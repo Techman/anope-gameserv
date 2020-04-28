@@ -72,7 +72,7 @@ class CommandGSSexDice : public Command
 			return;
 		}
 
-		if(!gs)
+		if (!gs)
 		{
 			source.Reply("GameServ client not found");
 			return;
@@ -129,7 +129,7 @@ class GSFantasySexDice : public Module
 		this->SetAuthor("Techman");
 		this->SetVersion("1.0.1");
 
-		if(!ModuleManager::FindModule("gameserv"))
+		if (!ModuleManager::FindModule("gameserv"))
 		{
 			throw ModuleException("This module requires the GameServ core module to be loaded in order to function.");
 		}

@@ -28,13 +28,13 @@ class GameServCore : public Module
 	{
 		const Anope::string& gsnick = conf->GetModule(this)->Get<const Anope::string>("client");
 
-		if(gsnick.empty())
+		if (gsnick.empty())
 		{
 			throw ConfigException(Module::name + ": <client> must be defined");
 		}
 
 		BotInfo* bi = BotInfo::Find(gsnick, true);
-		if(!bi)
+		if (!bi)
 		{
 			throw ConfigException(Module::name + ": no bot named " + gsnick);
 		}
